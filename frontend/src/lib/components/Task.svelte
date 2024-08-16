@@ -33,7 +33,6 @@
   on:dragstart={() => isDragging = true}
   on:dragend={() => isDragging = false}
   class:opacity-50={isDragging}
-	 
 >
 	<p>{task.title}</p>
 </li>
