@@ -27,7 +27,7 @@
 	class="card min-h-12 flex items-center gap-2 px-2 relative transition"
 	draggable="true"
 	on:drag
-	on:dragenter={() => isOVerAnotherLi = true}
+	on:dragenter={() => {isOVerAnotherLi = true}}
 	on:dragleave={() => isOVerAnotherLi = false}
   on:drop={() => isOVerAnotherLi = false}
   on:dragstart={() => isDragging = true}

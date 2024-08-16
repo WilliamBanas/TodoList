@@ -17,7 +17,7 @@
 			id: '3',
 			title: 'Task 3',
 			description: 'This is my description'
-		},
+		}
 		// {
 		// 	id: '7',
 		// 	title: 'Task 7',
@@ -127,7 +127,9 @@
 				class:ring-inset={isDraggingOverTodo}
 				on:dragenter={() => (isDraggingOverTodo = true)}
 				on:dragleave={() => (isDraggingOverTodo = false)}
-				on:drop={(event) => {drop(event, tasksTodo), isDraggingOverTodo = false}}
+				on:drop={(event) => {
+					drop(event, tasksTodo), (isDraggingOverTodo = false);
+				}}
 				on:dragover={dragOver}
 			>
 				{#each tasksTodo as task}
@@ -148,7 +150,9 @@
 				class:ring-inset={isDraggingOverThisWeek}
 				on:dragenter={() => (isDraggingOverThisWeek = true)}
 				on:dragleave={() => (isDraggingOverThisWeek = false)}
-				on:drop={(event) => {drop(event, tasksThisWeek), isDraggingOverThisWeek = false}}
+				on:drop={(event) => {
+					drop(event, tasksThisWeek), (isDraggingOverThisWeek = false);
+				}}
 				on:dragover={dragOver}
 			>
 				{#each tasksThisWeek as task}
@@ -169,7 +173,9 @@
 				class:ring-inset={isDraggingOverToday}
 				on:dragenter={() => (isDraggingOverToday = true)}
 				on:dragleave={() => (isDraggingOverToday = false)}
-				on:drop={(event) => {drop(event, tasksToday), isDraggingOverToday = false}}
+				on:drop={(event) => {
+					drop(event, tasksToday), (isDraggingOverToday = false);
+				}}
 				on:dragover={dragOver}
 			>
 				{#each tasksToday as task}
@@ -190,7 +196,9 @@
 				class:ring-inset={isDraggingOverDone}
 				on:dragenter={() => (isDraggingOverDone = true)}
 				on:dragleave={() => (isDraggingOverDone = false)}
-				on:drop={(event) => {drop(event, tasksDone), isDraggingOverDone = false}}
+				on:drop={(event) => {
+					drop(event, tasksDone), (isDraggingOverDone = false);
+				}}
 				on:dragover={dragOver}
 			>
 				{#each tasksDone as task}
