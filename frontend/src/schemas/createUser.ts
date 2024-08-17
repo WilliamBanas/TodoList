@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const newUserSchema = z.object({
-	nickName: z
+	nickname: z
 		.string({ required_error: 'Nickname is required' })
 		.min(3, 'Nickname must be at least 3 characters long')
 		.max(24, 'Nickname must be at most 24 characters long')
@@ -13,7 +13,12 @@ export const newUserSchema = z.object({
 		.trim(),
 	confirmPassword: z
 		.string({ required_error: 'You must confirm password' })
-		.min(6, 'Confirm password must be at least 6 characters long')
-		.max(32, 'Confirm password must be at most 24 characters long')
 		.trim()
-});
+}).superRefine(({ confirmPassword, password }, ctx) => {
+  if (confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "Passwords don't match",
+      path: ['confirmPassword']
+    });
+  }});

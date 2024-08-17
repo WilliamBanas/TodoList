@@ -14,32 +14,40 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
+  id           String         @id
   nickname     String         @unique
   password     String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   task         Task[]
   taskCategory TaskCategory[]
+  session      Session[]
+}
+
+model Session {
+  id        String   @id
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
 }
 
 model Task {
-  id          Int          @id @default(autoincrement())
-  title       String       
+  id          String       @id
+  title       String
   description String
   user        User         @relation(references: [id], fields: [userId])
-  userId      Int
+  userId      String
   category    TaskCategory @relation(references: [id], fields: [categoryId])
-  categoryId  Int
+  categoryId  String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
 
 model TaskCategory {
-  id        Int      @id @default(autoincrement())
-  name      String   
+  id        String   @id
+  name      String
   user      User     @relation(references: [id], fields: [userId])
-  userId    Int
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   task      Task[]
