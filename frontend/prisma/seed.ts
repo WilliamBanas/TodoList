@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
+import { lucia } from '../src/lib/server/auth';
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,7 @@ const user2Id = generateId(15);
 
 const category1Id = generateId(15);
 const category2Id = generateId(15);
-const category3Id = generateId(15); 
+const category3Id = generateId(15);
 const category4Id = generateId(15);
 const category5Id = generateId(15);
 const category6Id = generateId(15);
@@ -26,39 +27,41 @@ const user2Password = await new Argon2id().hash('password');
 
 async function main() {
 	console.log(`Start seeding ...`);
-console.log(user1Id);
+	console.log('Seeding users...');
 
 	const user1 = await prisma.user.create({
-   data: {
+		data: {
 			id: user1Id,
 			nickname: 'John',
 			password: user1Password
 		}
 	});
 	const user2 = await prisma.user.create({
-    data: {
+		data: {
 			id: user2Id,
 			nickname: 'Jane',
 			password: user2Password
 		}
 	});
 
+	console.log('Seeding task categories...');
+
 	const category1 = await prisma.taskCategory.create({
-    data: {
+		data: {
 			id: category1Id,
 			name: 'Todo',
 			userId: user1Id
 		}
 	});
 	const category2 = await prisma.taskCategory.create({
-    data: {
+		data: {
 			id: category2Id,
 			name: 'Doing',
 			userId: user1Id
 		}
 	});
 	const category3 = await prisma.taskCategory.create({
-    data: {
+		data: {
 			id: category3Id,
 			name: 'Done',
 			userId: user1Id
@@ -66,29 +69,31 @@ console.log(user1Id);
 	});
 
 	const category4 = await prisma.taskCategory.create({
-    data: {
+		data: {
 			id: category4Id,
 			name: 'Todo',
 			userId: user2Id
 		}
 	});
 	const category5 = await prisma.taskCategory.create({
-    data: {
+		data: {
 			id: category5Id,
 			name: 'Doing',
 			userId: user2Id
 		}
 	});
 	const category6 = await prisma.taskCategory.create({
-   data: {
+		data: {
 			id: category6Id,
 			name: 'Done',
 			userId: user2Id
 		}
 	});
 
+	console.log('Seeding tasks...');
+
 	const task1 = await prisma.task.create({
-    data: {
+		data: {
 			id: task1Id,
 			title: 'Getting a job',
 			description: 'The goal is to get a job.',
@@ -97,7 +102,7 @@ console.log(user1Id);
 		}
 	});
 	const task2 = await prisma.task.create({
-    data: {
+		data: {
 			id: task2Id,
 			title: 'Get some sleep',
 			description: 'The goal is to get some sleep.',
@@ -106,7 +111,7 @@ console.log(user1Id);
 		}
 	});
 	const task3 = await prisma.task.create({
-    data: {
+		data: {
 			id: task3Id,
 			title: 'Go to Walmart',
 			description: 'The goal is to go to Walmart.',
@@ -116,7 +121,7 @@ console.log(user1Id);
 	});
 
 	const task4 = await prisma.task.create({
-    data: {
+		data: {
 			id: task4Id,
 			title: 'Go to work',
 			description: 'The goal is to go to work.',
@@ -125,7 +130,7 @@ console.log(user1Id);
 		}
 	});
 	const task5 = await prisma.task.create({
-    data: {
+		data: {
 			id: task5Id,
 			title: 'Go to school',
 			description: 'The goal is to go to school.',
@@ -134,7 +139,7 @@ console.log(user1Id);
 		}
 	});
 	const task6 = await prisma.task.create({
-    data: {
+		data: {
 			id: task6Id,
 			title: 'Go to sleep',
 			description: 'The goal is to go to sleep.',

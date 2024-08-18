@@ -5,6 +5,7 @@
 	export let data: PageData;
 
 	const { form, errors } = superForm(data.form);
+
 </script>
 
 <div class="h-full relative">

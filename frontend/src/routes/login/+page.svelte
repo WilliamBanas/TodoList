@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
+  import { enhance } from "$app/forms";
 
 	export let data: PageData;
 
@@ -10,7 +11,7 @@
 <div class="h-full relative">
 	<div class="absolute w-fit transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
 		<h2 class="h2 text-center mb-16">Login</h2>
-		<form method="POST" class="flex flex-col gap-6">
+		<form method="POST" use:enhance class="flex flex-col gap-6">
 			<div class="w-80">
 				<label for="nickname" class="label">
           <span class="text-xl">Nickname</span>

@@ -1,88 +1,48 @@
 <script lang="ts">
+	import Header from '$lib/components/Header.svelte';
 	import Task, { type TaskItem } from '$lib/components/Task.svelte';
-	import Header from '../lib/components/Header.svelte';
+	import plus from '$lib/assets/icon-plus.png';
+	import { onMount } from 'svelte';
 
-	let tasksTodo: TaskItem[] = [
-		{
-			id: '1',
-			title: 'Task 1',
-			description: 'This is my description'
-		},
-		{
-			id: '2',
-			title: 'Task 2',
-			description: 'This is my description'
-		},
-		{
-			id: '3',
-			title: 'Task 3',
-			description: 'This is my description'
-		}
-		// {
-		// 	id: '7',
-		// 	title: 'Task 7',
-		// 	description: 'This is my description'
-		// },
-		// {
-		// 	id: '8',
-		// 	title: 'Task 8',
-		// 	description: 'This is my description'
-		// },
-		// {
-		// 	id: '9',
-		// 	title: 'Task 9',
-		// 	description: 'This is my description'
-		// },
-		// {
-		// 	id: '10',
-		// 	title: 'Task 10',
-		// 	description: 'This is my description'
-		// }
-	];
+	interface Category {
+		id: string;
+		name: string;
+		userId: string;
+		task: TaskItem[];
+		createdAt: Date;
+		updatedAt: Date;
+	}
 
-	let tasksThisWeek: TaskItem[] = [
-		{
-			id: '4',
-			title: 'Task 4',
-			description: 'This is my description'
-		}
-	];
-
-	let tasksToday: TaskItem[] = [
-		{
-			id: '5',
-			title: 'Task 5',
-			description: 'This is my description'
-		}
-	];
-
-	let tasksDone: TaskItem[] = [
-		{
-			id: '6',
-			title: 'Task 6',
-			description: 'This is my description'
-		}
-	];
-
-	let isDraggingOverTodo = false;
-	let isDraggingOverThisWeek = false;
-	let isDraggingOverToday = false;
-	let isDraggingOverDone = false;
+	let isDraggingOverCategory: string | false = false;
 
 	let taskDragging: TaskItem;
 
-	function drop(event: DragEvent, tasksList: TaskItem[]) {
-		const allTasks = [tasksToday, tasksTodo, tasksThisWeek, tasksDone];
+	const deleteTask = async (id: string) => {
+		const result = await fetch('/deleteTask');
+	};
+	const changeTaskCategory = async (id: string, categoryId: string) => {
+		const result = await fetch('/changeTaskCategory', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ id: id, categoryId: categoryId }) // Pass the task ID in the request body
+		});
+	};
 
-		allTasks.forEach((tasksArray) => {
+	function drop(event: DragEvent, tasksList: TaskItem[], id: string) {
+		const allArraysOfTasks = categories.map((category) => category.task);
+
+		allArraysOfTasks.forEach((tasksArray: TaskItem[]) => {
 			const index = tasksArray.indexOf(taskDragging);
 			if (index > -1) {
 				tasksArray.splice(index, 1);
+				//deleteTask(taskDragging.id);
 			}
 		});
 
 		const dropTarget = event.target as HTMLElement;
-		if (dropTarget.nodeName === 'LI') {
+		if (dropTarget.parentNode?.nodeName === 'LI') {
 			const id = dropTarget.getAttribute('id');
 			const dropTargetTask = tasksList.find((task) => task.id === id);
 			if (dropTargetTask) {
@@ -91,11 +51,10 @@
 			}
 		} else {
 			tasksList.push(taskDragging);
+			changeTaskCategory(taskDragging.id, id);
 		}
-		tasksThisWeek = tasksThisWeek;
-		tasksTodo = tasksTodo;
-		tasksToday = tasksToday;
-		tasksDone = tasksDone;
+		// TODO: re-render all task arrays
+		categories = categories;
 	}
 
 	function dragging(event: DragEvent, tasksList: TaskItem[]) {
@@ -109,102 +68,54 @@
 	function dragOver(event: DragEvent) {
 		event.preventDefault();
 	}
+
+	export let data;
+
+	let categories: Category[] = data.categories;
 </script>
 
 <div class="h-full">
-	<Header />
+	<Header nickname={data.nickname} />
 
-	<div class="flex gap-3 mx-auto mt-48 h-fit w-fit">
-		<div class="h-fit w-72 border-solid border-2 border-surface-600 rounded">
-			<div class="h-16 bg-primary-600 rounded-tr rounded-tl flex items-center justify-center">
-				<p class="text-2xl">To do</p>
-			</div>
-			<ul
-				role="group"
-				class="p-4 flex flex-col gap-3 h-80 overflow-y-auto transition"
-				class:ring-2={isDraggingOverTodo}
-				class:ring-surface-100={isDraggingOverTodo}
-				class:ring-inset={isDraggingOverTodo}
-				on:dragenter={() => (isDraggingOverTodo = true)}
-				on:dragleave={() => (isDraggingOverTodo = false)}
-				on:drop={(event) => {
-					drop(event, tasksTodo), (isDraggingOverTodo = false);
-				}}
-				on:dragover={dragOver}
-			>
-				{#each tasksTodo as task}
-					<Task on:drag={(event) => dragging(event, tasksTodo)} {task} />
-				{/each}
-			</ul>
-		</div>
-
-		<div class="h-fit w-72 border-solid border-2 border-surface-600 rounded">
-			<div class="h-16 bg-error-600 rounded-tr rounded-tl flex items-center justify-center">
-				<p class="text-2xl">This week</p>
-			</div>
-			<ul
-				role="group"
-				class="p-4 flex flex-col gap-3 h-80 overflow-y-auto transition"
-				class:ring-2={isDraggingOverThisWeek}
-				class:ring-surface-100={isDraggingOverThisWeek}
-				class:ring-inset={isDraggingOverThisWeek}
-				on:dragenter={() => (isDraggingOverThisWeek = true)}
-				on:dragleave={() => (isDraggingOverThisWeek = false)}
-				on:drop={(event) => {
-					drop(event, tasksThisWeek), (isDraggingOverThisWeek = false);
-				}}
-				on:dragover={dragOver}
-			>
-				{#each tasksThisWeek as task}
-					<Task on:drag={(event) => dragging(event, tasksThisWeek)} {task} />
-				{/each}
-			</ul>
-		</div>
-
-		<div class="h-fit w-72 border-solid border-2 border-surface-600 rounded">
-			<div class="h-16 bg-warning-600 rounded-tr rounded-tl flex items-center justify-center">
-				<p class="text-2xl">Today</p>
-			</div>
-			<ul
-				role="group"
-				class="p-4 flex flex-col gap-3 h-80 overflow-y-auto transition"
-				class:ring-2={isDraggingOverToday}
-				class:ring-surface-100={isDraggingOverToday}
-				class:ring-inset={isDraggingOverToday}
-				on:dragenter={() => (isDraggingOverToday = true)}
-				on:dragleave={() => (isDraggingOverToday = false)}
-				on:drop={(event) => {
-					drop(event, tasksToday), (isDraggingOverToday = false);
-				}}
-				on:dragover={dragOver}
-			>
-				{#each tasksToday as task}
-					<Task on:drag={(event) => dragging(event, tasksToday)} {task} />
-				{/each}
-			</ul>
-		</div>
-
-		<div class="h-fit w-72 border-solid border-2 border-surface-600 rounded">
-			<div class="h-16 bg-success-600 rounded-tr rounded-tl flex items-center justify-center">
-				<p class="text-2xl">Done</p>
-			</div>
-			<ul
-				role="group"
-				class="p-4 flex flex-col gap-3 h-80 overflow-y-auto transition"
-				class:ring-2={isDraggingOverDone}
-				class:ring-surface-100={isDraggingOverDone}
-				class:ring-inset={isDraggingOverDone}
-				on:dragenter={() => (isDraggingOverDone = true)}
-				on:dragleave={() => (isDraggingOverDone = false)}
-				on:drop={(event) => {
-					drop(event, tasksDone), (isDraggingOverDone = false);
-				}}
-				on:dragover={dragOver}
-			>
-				{#each tasksDone as task}
-					<Task on:drag={(event) => dragging(event, tasksDone)} {task} />
-				{/each}
-			</ul>
-		</div>
+	<div class="flex gap-4 mx-auto mt-24 h-fit px-8 box-border h-3/4">
+		{#each categories as category}
+			{#if category.task}
+				<div
+					role="contentinfo"
+					class="h-fit w-72 border-solid border-2 border-surface-500 rounded bg-surface-700 p-2"
+				>
+					<p class="text-xl p-3">{category.name}</p>
+					<ul
+						role="group"
+						class=" flex min-h-16 flex-col gap-2 overflow-y-auto transition"
+						class:ring-2={isDraggingOverCategory === category.id ? true : false}
+						class:ring-surface-100={isDraggingOverCategory === category.id ? true : false}
+						class:ring={isDraggingOverCategory === category.id ? true : false}
+						class:bg-surface-600={category.task.length === 0}
+						class:justify-center={category.task.length === 0}
+						on:dragenter={() => (isDraggingOverCategory = category.id)}
+						on:dragleave={() => (isDraggingOverCategory = false)}
+						on:drop={(event) => {
+							drop(event, category.task, category.id), (isDraggingOverCategory = false);
+						}}
+						on:dragover={dragOver}
+					>
+						{#if category.task.length === 0}
+							<p class="flex items-center justify-center h-full text-slate-500">slide here</p>
+						{:else}
+							{#each category.task as task}
+								<Task on:drag={(event) => dragging(event, category.task)} {task} />
+							{/each}
+						{/if}
+					</ul>
+					<button
+						class="flex items-center p-3 w-full gap-3 rounded transition hover:bg-surface-800"
+					>
+						<img class="w-4" src={plus} alt="" />
+						<span>Add a task</span>
+					</button>
+				</div>
+			{/if}
+		{/each}
 	</div>
 </div>
