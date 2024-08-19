@@ -1,9 +1,8 @@
 name: Pagesspeed
 
-on: 
+on:
   push:
-    branches:
-      -main
+    branches: -main
 
 jobs:
   pagespeed:
@@ -17,3 +16,14 @@ jobs:
           threshold: 70
           strategy: mobile
           key: ${{ secrets.APIKEY }}
+
+  surge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to foo-bar.surge.sh
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: "foo-bar.surge.sh"
+          project: "."
+          login: ${{ secrets.surge_login }}
+          token: ${{ secrets.surge_token }}
