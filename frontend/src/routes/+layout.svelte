@@ -1,6 +1,7 @@
-<script lang="ts">
-	import '../app.postcss';
-
+<script>
+	import '../app.css';
+	import { ModeWatcher } from 'mode-watcher';
 </script>
 
-<slot />
+<ModeWatcher />
+<slot></slot>

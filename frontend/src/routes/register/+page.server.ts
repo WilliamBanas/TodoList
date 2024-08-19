@@ -8,9 +8,13 @@ import { Argon2id } from 'oslo/password';
 import { lucia } from '$lib/server/auth';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load: PageServerLoad = async (request) => {
-	const form = await superValidate(request, zod(newUserSchema));
-	return { form };
+export const load: PageServerLoad = async (event) => {
+	if (!event.locals.user) {
+    const form = await superValidate(event, zod(newUserSchema));
+		return { form };
+	} else {
+		redirect(302, '/');
+	}
 };
 
 export const actions: Actions = {

@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit'
-import type { RequestEvent } from './$types';
+import type { RequestEvent } from '@sveltejs/kit';
 import { changeTaskCategory } from '$lib/server/tasks';
 
 // CHANGE TASK CATEGORY ID

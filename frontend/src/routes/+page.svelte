@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Header from '$lib/components/Header.svelte';
 	import Task, { type TaskItem } from '$lib/components/Task.svelte';
-	import plus from '$lib/assets/icon-plus.png';
+	import Plus from 'lucide-svelte/icons/plus';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import CreateTaskModal from '$lib/components/CreateTaskModal.svelte';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
 	interface Category {
 		id: string;
@@ -19,6 +23,8 @@
 	export let data;
 
 	let categories: Category[] = data.categories;
+
+	let selectedCategory: Category;
 
 	const updateTaskCategory = async (id: string, categoryId: string) => {
 		const response = await fetch('/api/task', {
@@ -93,48 +99,58 @@
 	}
 </script>
 
-<div class="h-full">
-	<Header nickname={data.nickname} />
+<Dialog.Root>
+	<div class="h-full">
+		<Header nickname={data.nickname} />
 
-	<div class="flex gap-4 mx-auto mt-24 h-fit px-8 box-border h-3/4">
-		{#each categories as category}
-			{#if category.task}
-				<div
-					role="contentinfo"
-					class="h-fit w-72 border-solid border-2 border-surface-500 rounded bg-surface-700 p-2"
-				>
-					<p class="text-xl p-3">{category.name}</p>
-					<ul
-						role="group"
-						class=" flex min-h-16 flex-col gap-2 overflow-y-auto transition rounded"
-						class:ring-2={isDraggingOverCategory === category.id ? true : false}
-						class:ring-surface-100={isDraggingOverCategory === category.id ? true : false}
-						class:ring={isDraggingOverCategory === category.id ? true : false}
-						class:bg-surface-800={category.task.length === 0}
-						class:justify-center={category.task.length === 0}
-						on:dragenter={() => (isDraggingOverCategory = category.id)}
-						on:dragleave={() => (isDraggingOverCategory = false)}
-						on:drop={(event) => {
-							drop(event, category.task, category.id), (isDraggingOverCategory = false);
-						}}
-						on:dragover={dragOver}
-					>
-						{#if category.task.length === 0}
-							<p class="flex items-center justify-center h-full text-slate-500">slide here</p>
-						{:else}
-							{#each category.task as task}
-								<Task on:drag={(event) => dragging(event, category.task)} {task} />
-							{/each}
-						{/if}
-					</ul>
-					<button
-						class="flex items-center mt-2 p-3 w-full gap-3 rounded transition hover:bg-surface-800"
-					>
-						<img class="w-4" src={plus} alt="" />
-						<span>Add a task</span>
-					</button>
-				</div>
-			{/if}
-		{/each}
+		<div class="mx-auto mt-24 box-border flex h-3/4 h-fit gap-4 px-8">
+			{#each categories as category}
+				{#if category.task}
+					<Card.Root role="contentinfo" class="bg-background flex h-fit w-72 flex-col shadow-lg">
+						<Card.Header class="p-4">
+							<Card.Title class="text-xl">{category.name}</Card.Title>
+						</Card.Header>
+						<Card.Content class="p-4 pt-0">
+							<ul
+								role="group"
+								class="flex min-h-20 flex-col gap-4 overflow-y-auto rounded transition"
+								class:ring-2={isDraggingOverCategory === category.id ? true : false}
+								class:ring={isDraggingOverCategory === category.id ? true : false}
+								class:border-dashed={category.task.length === 0}
+								class:border-2={category.task.length === 0}
+								class:border-border={category.task.length === 0}
+								class:justify-center={category.task.length === 0}
+								on:dragenter={() => (isDraggingOverCategory = category.id)}
+								on:dragleave={() => (isDraggingOverCategory = false)}
+								on:drop={(event) => {
+									drop(event, category.task, category.id), (isDraggingOverCategory = false);
+								}}
+								on:dragover={dragOver}
+							>
+								{#if category.task.length === 0}
+									<p class="text-primary } flex h-full items-center justify-center opacity-80">
+										slide here
+									</p>
+								{:else}
+									{#each category.task as task}
+										<Task on:drag={(event) => dragging(event, category.task)} {task} />
+									{/each}
+								{/if}
+							</ul>
+						</Card.Content>
+						<Card.Footer class="p-4 pt-0">
+							<!-- <Button class="hover:bg-secondary w-full rounded p-0 transition" on:click={() => {(selectedCategory = category)}}>
+							<div class="flex w-full items-center justify-start gap-3 px-3">
+								<Plus class="w-6" />
+								<span>Add new task</span>
+							</div>
+						</Button> -->
+							<Dialog.Trigger>Add new task</Dialog.Trigger>
+							<CreateTaskModal category={selectedCategory} {categories} />
+						</Card.Footer>
+					</Card.Root>
+				{/if}
+			{/each}
+		</div>
 	</div>
-</div>
+</Dialog.Root>

@@ -6,7 +6,11 @@ export const getCategories = async (userId: string) => {
       userId
     },
     include: {
-      task: true
+      task: {
+        where: {
+          userId
+        }
+      }
     }  
   });
 }
