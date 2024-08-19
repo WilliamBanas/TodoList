@@ -1,0 +1,19 @@
+name: Pagesspeed
+
+on: 
+  push:
+    branches:
+      -main
+
+jobs:
+  pagespeed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Running Page Speed Insights
+        uses: jakepartusch/psi-action@v1.3
+        id: psi
+        with:
+          url: "https://jake.partus.ch"
+          threshold: 70
+          strategy: mobile
+          key: ${{ secrets.APIKEY }}

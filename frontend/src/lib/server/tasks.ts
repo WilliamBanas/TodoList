@@ -1,9 +1,12 @@
-import prisma from "./prisma";
-
-export const deleteTask = async (id: string) => {
-  return await prisma.task.delete({ where: { id } });
-};
+import prisma from './prisma';
 
 export const changeTaskCategory = async (id: string, categoryId: string) => {
-  return await prisma.task.update({ where: { id }, data: { categoryId } });
+	return await prisma.task.update({
+		where: {
+			id
+		},
+		data: {
+			categoryId
+		}
+	});
 };

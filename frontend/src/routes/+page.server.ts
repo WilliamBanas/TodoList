@@ -2,8 +2,7 @@ import { lucia } from '$lib/server/auth';
 import { fail, redirect, error } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { getCategories } from '$lib/server/categories';
-import { deleteTask, changeTaskCategory } from '$lib/server/tasks';
-import prisma from '$lib/server/prisma';
+import { changeTaskCategory } from '$lib/server/tasks';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
@@ -38,13 +37,15 @@ export const actions: Actions = {
 		throw redirect(302, '/login');
 	},
 
-	// deleteTask: async (event) => {
-	// 	return await prisma.task.delete({ where: { id } });
-	// },
+	updateTaskCategory: async ({ request }) => {
+		const data = await request.json();
 
-	changeTaskCategory: async (event) => {
-    const formData = await event.request.json();
-    const { id, categoryId } = formData;
-		return await prisma.task.update({ where: { id }, data: { categoryId } });
+		const { id, categoryId } = data;
+
+		const changetaskCategory = await changeTaskCategory(id, categoryId);
+
+		if (!changetaskCategory) {
+			error(404, 'Changes not applied');
+		}
 	}
 };
