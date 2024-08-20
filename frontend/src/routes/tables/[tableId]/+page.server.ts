@@ -1,13 +1,22 @@
 import { lucia } from '$lib/server/auth';
 import { fail, redirect, error } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { getTables } from '$lib/server/tables';
+import { getTableData, getTags } from '$lib/server/tableData';
+import { changeTaskCategory } from '$lib/server/tasks';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
-		return { 
-      nickname: event.locals.user.nickname 
-    };
+		const tableId = event.params.tableId;
+		const categories = await getTableData(tableId);
+    const tags = await getTags(tableId);
+		if (!categories) {
+			error(404, 'No category found');
+		}
+		return {
+      tags,
+			categories,
+			nickname: event.locals.user.nickname
+		};
 	} else {
 		redirect(302, '/login');
 	}
@@ -27,4 +36,16 @@ export const actions: Actions = {
 
 		throw redirect(302, '/login');
 	},
+
+	updateTaskCategory: async ({ request }) => {
+		const data = await request.json();
+
+		const { id, categoryId } = data;
+
+		const changetaskCategory = await changeTaskCategory(id, categoryId);
+
+		if (!changetaskCategory) {
+			error(404, 'Changes not applied');
+		}
+	}
 };

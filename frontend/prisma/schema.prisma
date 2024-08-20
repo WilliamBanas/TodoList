@@ -19,9 +19,9 @@ model User {
   password     String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  task         Task[]
   taskCategory TaskCategory[]
   session      Session[]
+  table        Table[]
 }
 
 model Session {
@@ -31,24 +31,64 @@ model Session {
   expiresAt DateTime
 }
 
-model Task {
-  id          String       @id
-  title       String
-  description String
-  user        User         @relation(references: [id], fields: [userId])
-  userId      String
-  category    TaskCategory @relation(references: [id], fields: [categoryId])
-  categoryId  String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+model Table {
+  id           String         @id
+  title        String
+  favorite     Boolean?       @default(false)
+  userId       String
+  user         User           @relation(references: [id], fields: [userId])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  tag          Tag[]
+  taskCategory TaskCategory[]
+}
+
+model Tag {
+  id       String     @id
+  name     String     @unique
+  color    String
+  table    Table      @relation(references: [id], fields: [tableId])
+  tableId  String
+  tag_Task Tag_Task[]
 }
 
 model TaskCategory {
   id        String   @id
   name      String
+  table     Table    @relation(references: [id], fields: [tableId])
+  tableId   String
   user      User     @relation(references: [id], fields: [userId])
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   task      Task[]
+}
+
+model Task {
+  id          String       @id
+  title       String
+  description String?
+  endAt       String?
+  links       String[]
+  category    TaskCategory @relation(references: [id], fields: [categoryId])
+  categoryId  String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  tag_Task    Tag_Task[]
+}
+
+model Tag_Task {
+  id     String @id
+  tag    Tag    @relation(references: [id], fields: [tagId])
+  tagId  String
+  task   Task   @relation(references: [id], fields: [taskId])
+  taskId String
+}
+
+model Image {
+  id   String @id
+  name String
+  size Int
+  type String
+  bin  Bytes
 }

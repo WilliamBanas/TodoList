@@ -5,7 +5,10 @@ import { getTables } from '$lib/server/tables';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
+    const userId = event.locals.user.id;
+    const tables = await getTables(userId);
 		return { 
+      tables,
       nickname: event.locals.user.nickname 
     };
 	} else {
@@ -28,3 +31,4 @@ export const actions: Actions = {
 		throw redirect(302, '/login');
 	},
 };
+
