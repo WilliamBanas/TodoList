@@ -1,24 +1,28 @@
-import prisma  from "./prisma";
+import prisma from './prisma';
 
-export const getTableData = async (tableId: string) => {
-  return await prisma.taskCategory.findMany({
-    where: {
-      tableId,
-    },
-    include: {
-      task: {
-        include: {
-          tag_Task: true
-        }
-      }
-    }
-  });
-}
+export const getCategories = async (tableId: string) => {
+	return await prisma.taskCategory.findMany({
+		where: {
+			tableId
+		},
+	});
+};
 
 export const getTags = async (tableId: string) => {
-  return await prisma.tag.findMany({
+	return await prisma.tag.findMany({
+		where: {
+			tableId
+		}
+	});
+};
+
+export const getTasks = async (tableId: string) => {
+  return await prisma.task.findMany({
     where: {
       tableId
+    },
+    include: {
+      tag_Task: true
     }
-  })
-}
+  });
+};

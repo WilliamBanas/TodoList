@@ -1,7 +1,6 @@
 import { lucia } from '$lib/server/auth';
 import { fail, redirect, error } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { getTables } from '$lib/server/tables';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {

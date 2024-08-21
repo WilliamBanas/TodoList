@@ -1,18 +1,20 @@
 import { lucia } from '$lib/server/auth';
 import { fail, redirect, error } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { getTableData, getTags } from '$lib/server/tableData';
+import { getCategories, getTags, getTasks } from '$lib/server/tableData';
 import { changeTaskCategory } from '$lib/server/tasks';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
 		const tableId = event.params.tableId;
-		const categories = await getTableData(tableId);
+		const categories = await getCategories(tableId);
     const tags = await getTags(tableId);
+    const tasks = await getTasks(tableId);
 		if (!categories) {
 			error(404, 'No category found');
 		}
 		return {
+      tasks,
       tags,
 			categories,
 			nickname: event.locals.user.nickname

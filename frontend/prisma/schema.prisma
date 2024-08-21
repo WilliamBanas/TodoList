@@ -41,6 +41,7 @@ model Table {
   updatedAt    DateTime       @updatedAt
   tag          Tag[]
   taskCategory TaskCategory[]
+  task         Task[]
 }
 
 model Tag {
@@ -70,6 +71,8 @@ model Task {
   description String?
   endAt       String?
   links       String[]
+  table       Table        @relation(references: [id], fields: [tableId])
+  tableId     String
   category    TaskCategory @relation(references: [id], fields: [categoryId])
   categoryId  String
   createdAt   DateTime     @default(now())

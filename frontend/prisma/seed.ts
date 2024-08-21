@@ -92,7 +92,7 @@ async function main() {
 		data: {
 			id: tag1Id,
 			name: 'Homework',
-			color: 'blue',
+			color: 'sky-600',
 			tableId: table1Id
 		}
 	});
@@ -101,7 +101,7 @@ async function main() {
 		data: {
 			id: tag2Id,
 			name: 'Work',
-			color: 'green',
+			color: 'green-700',
 			tableId: table1Id
 		}
 	});
@@ -110,7 +110,7 @@ async function main() {
 		data: {
 			id: tag3Id,
 			name: 'Personal',
-			color: 'purple',
+			color: 'purple-600',
 			tableId: table1Id
 		}
 	});
@@ -119,7 +119,7 @@ async function main() {
 		data: {
 			id: tag4Id,
 			name: 'Sport',
-			color: 'teal',
+			color: 'teal-600',
 			tableId: table1Id
 		}
 	});
@@ -128,7 +128,7 @@ async function main() {
 		data: {
 			id: tag5Id,
 			name: 'Frontend',
-			color: 'indigo',
+			color: 'indigo-700',
 			tableId: table1Id
 		}
 	});
@@ -137,7 +137,7 @@ async function main() {
 		data: {
 			id: tag6Id,
 			name: 'Backend',
-			color: 'red',
+			color: 'red-600',
 			tableId: table1Id
 		}
 	});
@@ -146,7 +146,7 @@ async function main() {
 		data: {
 			id: tag7Id,
 			name: 'Testing',
-			color: 'yellow',
+			color: 'yellow-600',
 			tableId: table1Id
 		}
 	});
@@ -155,7 +155,7 @@ async function main() {
 		data: {
 			id: tag8Id,
 			name: 'Design',
-			color: 'pink',
+			color: 'pink-500',
 			tableId: table1Id
 		}
 	});
@@ -164,7 +164,7 @@ async function main() {
 		data: {
 			id: tag9Id,
 			name: 'Management',
-			color: 'orange',
+			color: 'orange-500',
 			tableId: table1Id
 		}
 	});
@@ -173,7 +173,7 @@ async function main() {
 		data: {
 			id: tag10Id,
 			name: 'Cooking',
-			color: 'lime',
+			color: 'zinc-600 ',
 			tableId: table1Id
 		}
 	});
@@ -241,6 +241,7 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category1Id,
+      tableId: table1Id
 		}
 	});
 	const task2 = await prisma.task.create({
@@ -251,6 +252,7 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category1Id,
+      tableId: table1Id
 		}
 	});
 	const task3 = await prisma.task.create({
@@ -261,6 +263,7 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category1Id,
+      tableId: table1Id
 		}
 	});
 
@@ -272,6 +275,7 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category1Id,
+      tableId: table1Id
 		}
 	});
 	const task5 = await prisma.task.create({
@@ -282,6 +286,7 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category4Id,
+      tableId: table2Id
 		}
 	});
 	const task6 = await prisma.task.create({
@@ -292,58 +297,59 @@ async function main() {
 			endAt: '25/12/2024',
 			links: ['https://github.com/', 'https://chatgpt.com/', 'https://developer.mozilla.org/fr/'],
 			categoryId: category4Id,
+      tableId: table2Id
 		}
 	});
 
   console.log('Seeding task_tags...');
 
-  const taskTag1 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task1Id,
-      tagId: tag1Id,
-      taskId: task1Id,
-    }
-  })
+	const taskTag1 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task1Id,
+			tagId: tag1Id,
+			taskId: task1Id
+		}
+	});
 
-  const taskTag2 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task2Id,
-      tagId: tag2Id,
-      taskId: task1Id,
-    }
-  })
+	const taskTag2 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task2Id,
+			tagId: tag2Id,
+			taskId: task1Id
+		}
+	});
 
-  const taskTag3 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task3Id,
-      tagId: tag3Id,
-      taskId: task2Id,
-    }
-  })
+	const taskTag3 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task3Id,
+			tagId: tag3Id,
+			taskId: task2Id
+		}
+	});
 
-  const taskTag4 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task4Id,
-      tagId: tag4Id,
-      taskId: task2Id,
-    }
-  })
+	const taskTag4 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task4Id,
+			tagId: tag4Id,
+			taskId: task2Id
+		}
+	});
 
-  const taskTag5 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task5Id,
-      tagId: tag5Id,
-      taskId: task3Id,
-    }
-  })
+	const taskTag5 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task5Id,
+			tagId: tag5Id,
+			taskId: task3Id
+		}
+	});
 
-  const taskTag6 = await prisma.tag_Task.create({
-    data: {
-      id: tag_task6Id,
-      tagId: tag6Id,
-      taskId: task4Id,
-    }
-  })
+	const taskTag6 = await prisma.tag_Task.create({
+		data: {
+			id: tag_task6Id,
+			tagId: tag6Id,
+			taskId: task4Id
+		}
+	});
   
 
 	console.log(`Seeding finished.`);
