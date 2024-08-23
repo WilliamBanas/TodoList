@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
-import { lucia } from '../src/lib/server/auth';
 
 const prisma = new PrismaClient();
 

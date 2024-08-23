@@ -38,7 +38,7 @@
 	import CreateTaskModal from '$lib/components/CreateTaskModal.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { onMount } from 'svelte';
-	import UnlistedTasks from '$lib/components/UnlistedTasks.svelte';
+	// import UnlistedTasks from '$lib/components/UnlistedTasks.svelte';
 
 	let isDraggingOverCategory: string | false = false;
 
@@ -58,8 +58,6 @@
 
 	// Toutes les categories
 	let categories: Category[] = data.categories;
-
-	export let actualTags: Tag[];
 
 	const updateTaskCategory = async (id: string, categoryId: string) => {
 		const response = await fetch('/api/task', {
@@ -103,7 +101,6 @@
 		taskDragging.categoryId = id;
 		updateTaskCategory(taskDragging.id, id);
 		// 8. On re-render les tableaux pour actualiser l'affichage.
-		actualTags = actualTags;
 		tasks = tasks;
 	}
 
@@ -117,7 +114,6 @@
 			taskDragging = task;
 		}
 
-		console.log(taskDragging);
 	}
 
 	function dragOver(event: DragEvent) {
