@@ -1,7 +1,5 @@
 <script context="module" lang="ts">
-	import { onMount } from 'svelte';
-	import type { Tag } from '../../routes/tables/[tableId]/+page.svelte';
-  import type { TaskItem } from '../../routes/tables/[tableId]/+page.svelte';
+	import type { TaskItemWithTags } from '../../routes/tables/[tableId]/+page.svelte';
 
 	export interface tag_Task {
 		id: string;
@@ -12,21 +10,12 @@
 
 <script lang="ts">
 	// La tâche
-	export let task: TaskItem;
-
-	// Tout les tags
-	export let tags: Tag[];
-
-	// Toutes les associassions entre tâche et tag
-	let tag_Tasks: tag_Task[] = task.tag_Task;
-
-	// Tableau des tags de la tâche
-	// Pour chaque associassion entre tâche et tag on vérifie si son id est le même que l'un des tags
-	// Tout les tags qui ressortent sont stockés dans ce tableau
-	let actualTags = tag_Tasks.map((tag_Task) => tags.find((tag) => tag_Task.tagId === tag.id));
+	export let task: TaskItemWithTags;
 
 	let isOVerAnotherLi = false;
 	let isDragging = false;
+
+	const colors = [];
 </script>
 
 <li
@@ -42,11 +31,11 @@
 	on:dragend={() => (isDragging = false)}
 	class:opacity-50={isDragging}
 >
-	{#if actualTags.length > 0}
+	{#if task.tags.length > 0}
 		<ul class="flex flex-wrap gap-2 p-2">
-			{#each actualTags as actualTag}
-				<li class={`bg-${actualTag?.color} rounded px-1 text-xs font-semibold shadow`}>
-					{actualTag?.name}
+			{#each task.tags as tag}
+				<li class={`bg-${tag.color} rounded px-2 text-sm font-semibold shadow`}>
+					{tag.name}
 				</li>
 			{/each}
 		</ul>

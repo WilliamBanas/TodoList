@@ -4,7 +4,19 @@ import type { Config } from "tailwindcss";
 const config: Config = {
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
-	safelist: ["dark"],
+	safelist: [
+    "dark",
+    "bg-sky-700",
+    "bg-green-700",
+    "bg-purple-700",
+    "bg-red-700",
+    "bg-orange-700",
+    "bg-pink-700",
+    "bg-indigo-700",
+    "bg-teal-700",
+    "bg-zinc-700",
+    "bg-yellow-700",
+  ],
 	theme: {
 		container: {
 			center: true,

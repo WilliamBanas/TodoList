@@ -5,6 +5,8 @@ WORKDIR /usr/src/frontend
 COPY package.json ./
 COPY prisma ./prisma
 
+ENV ORIGIN http://localhost:80
+
 RUN npm install -g pnpm
 RUN pnpm install
 RUN npx prisma generate
