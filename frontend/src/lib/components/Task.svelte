@@ -15,7 +15,6 @@
 	let isOVerAnotherLi = false;
 	let isDragging = false;
 
-	const colors = [];
 </script>
 
 <li
@@ -42,5 +41,5 @@
 	{/if}
 
 	<p class="p-3 text-sm">{task.title}</p>
-	<!-- <div id={task.id} class="absolute h-full w-full"></div> -->
+	<div id={task.id} class="absolute h-full w-full"></div>
 </li>
