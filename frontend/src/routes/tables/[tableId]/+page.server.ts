@@ -74,6 +74,10 @@ export const actions: Actions = {
 
     if (!createNewTask) {
       error(404, 'Task not created');
+    } else {
+      return {
+        
+      }
     }
   }
 };

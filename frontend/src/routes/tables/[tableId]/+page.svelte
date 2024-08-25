@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	interface Category {
+	export interface Category {
 		id: string;
 		name: string;
 		userId: string;
@@ -48,12 +48,11 @@
 	let taskDragging: TaskItemWithTags;
 	// Données de la page
 	export let data: any;
-  let form = data.form;
-  let tableId = data.tableId;
+	let tableId = data.tableId;
 	let tags: Tag[] = data.tags;
 	// Toutes les tâches
 	let tasks: TaskItemWithTags[] = data.tasks;
-
+  let dataForm = data.form
 	// Toutes les tâches avec leurs tags respectifs
 	let tasksWithTags = tasks.map((task) => {
 		const tagsAssocies = task.tag_Task
@@ -72,7 +71,7 @@
 		};
 	});
 
-  // Catégories
+	// Catégories
 	let categories: Category[] = data.categories;
 
 	const updateTaskCategory = async (id: string, categoryId: string) => {
@@ -101,8 +100,6 @@
 				const dropTargetIndex = tasksList.indexOf(dropTargetTask);
 				tasksList.splice(dropTargetIndex, 0, taskDragging);
 			}
-		} else {
-			tasksList.push(taskDragging);
 		}
 		taskDragging.categoryId = id;
 		updateTaskCategory(taskDragging.id, id);
@@ -121,23 +118,30 @@
 		event.preventDefault();
 	}
 
-	let isAddingTask = categories.reduce((acc, category) => {
-		acc[category.id] = false;
-		return acc;
-	}, {} as { [key: string]: boolean });
+	let isAddingTask = categories.reduce(
+		(acc, category) => {
+			acc[category.id] = false;
+			return acc;
+		},
+		{} as { [key: string]: boolean }
+	);
 
 
-  function startAddingTask(categoryId: string) {
+	function startAddingTask(categoryId: string) {
 		for (const key in isAddingTask) {
 			isAddingTask[key] = false;
 		}
 		isAddingTask[categoryId] = true;
 	}
 
-  function endAddingTask(categoryId: string) {
-		
+	function endAddingTask(categoryId: string) {
 		isAddingTask[categoryId] = false;
 	}
+
+  function addingTask(categoryId: string, categoryTasks: TaskItemWithTags[]) {
+    endAddingTask(categoryId);
+    tasksWithTags = tasksWithTags;
+  }
 </script>
 
 <div class="h-full">
@@ -170,10 +174,17 @@
 						}}
 						on:dragover={dragOver}
 					>
-            {#if isAddingTask[category.id]}
-              <AddTaskCard dataForm={data.form} {tableId} {category} {endAddingTask} />
-            {/if}
-						{#if categoryTasks.length === 0  && !isAddingTask[category.id]}
+						{#if isAddingTask[category.id]}
+							<AddTaskCard
+								{dataForm}
+								{tableId}
+								{category}
+								{endAddingTask}
+                {addingTask}
+                {categoryTasks}
+							/>
+						{/if}
+						{#if categoryTasks.length === 0 && !isAddingTask[category.id]}
 							<p
 								class="text-input text-primary-foreground/40 flex h-full items-center justify-center"
 							>
@@ -187,10 +198,14 @@
 					</ul>
 				</Card.Content>
 				<Card.Footer class="p-4 pt-0">
-					<Button on:click={() => startAddingTask(category.id)} variant="ghost" class="hover:bg-input w-full rounded transition px-2">
+					<Button
+						on:click={() => startAddingTask(category.id)}
+						variant="ghost"
+						class="hover:bg-input w-full rounded px-2 transition"
+					>
 						<div class="flex w-full items-center justify-start gap-3">
 							<Plus class="w-6" />
-							<span>Add new card</span>
+							<span>Add a new card</span>
 						</div>
 					</Button>
 				</Card.Footer>
@@ -199,9 +214,9 @@
 		<Card.Root class="bg-background mt-24 flex h-fit w-72 min-w-72 flex-col shadow-lg">
 			<Card.Header class="p-4">
 				<Button variant="ghost" class="hover:bg-input w-full rounded px-2 "
-					><div class="flex w-full items-center justify-start gap-3 ">
+					><div class="flex w-full items-center justify-start gap-3">
 						<Plus class="w-6" />
-						<span>Add new list</span>
+						<span>Add a new list</span>
 					</div></Button
 				>
 			</Card.Header>
