@@ -41,19 +41,16 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { onMount } from 'svelte';
 	import AddTaskCard from '$lib/components/addTaskCard.svelte';
-
 	// import UnlistedTasks from '$lib/components/UnlistedTasks.svelte';
 
 	let isDraggingOverCategory: string | false = false;
-
 	// La tâche en cours de drag
 	let taskDragging: TaskItemWithTags;
-
 	// Données de la page
 	export let data: any;
-
+  let form = data.form;
+  let tableId = data.tableId;
 	let tags: Tag[] = data.tags;
-
 	// Toutes les tâches
 	let tasks: TaskItemWithTags[] = data.tasks;
 
@@ -174,7 +171,7 @@
 						on:dragover={dragOver}
 					>
             {#if isAddingTask[category.id]}
-              <AddTaskCard {category} {endAddingTask} />
+              <AddTaskCard dataForm={data.form} {tableId} {category} {endAddingTask} />
             {/if}
 						{#if categoryTasks.length === 0  && !isAddingTask[category.id]}
 							<p

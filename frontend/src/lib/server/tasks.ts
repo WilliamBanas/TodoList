@@ -10,3 +10,14 @@ export const changeTaskCategory = async (id: string, categoryId: string) => {
 		}
 	});
 };
+
+export const createTask = async (tableId: string, title: string, id: string, categoryId: string) => {
+  return await prisma.task.create({ 
+    data: {
+      id: id,
+      title: title,
+      tableId: tableId,
+      categoryId: categoryId
+    }
+  });
+}
