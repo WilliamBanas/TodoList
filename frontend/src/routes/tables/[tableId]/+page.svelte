@@ -188,7 +188,7 @@
 							class="hover:bg-primary/10 w-full rounded px-2 transition"
 						>
 							<div class="flex w-full items-center justify-start gap-3">
-								<Plus class="w-6" />
+								<Plus class="w-5" />
 								<span>Add a new card</span>
 							</div>
 						</Button>
@@ -202,7 +202,7 @@
 			<Card.Header class="p-4">
 				<Button variant="ghost" class="hover:bg-primary/10 w-full rounded px-2 "
 					><div class="flex w-full items-center justify-start gap-3">
-						<Plus class="w-6" />
+						<Plus class="w-5" />
 						<span>Add a new list</span>
 					</div></Button
 				>
