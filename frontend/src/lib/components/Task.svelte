@@ -20,7 +20,7 @@
 <li
 	role="listitem"
 	id={task.id}
-	class="bg-secondary relative flex min-h-16 flex-col justify-start rounded shadow-md"
+	class="bg-secondary text-primary-foreground relative flex min-h-16 flex-col justify-start rounded shadow-md"
 	draggable="true"
 	on:drag
 	on:dragenter={() => (isOVerAnotherLi = true)}
@@ -40,6 +40,6 @@
 		</ul>
 	{/if}
 
-	<p class="p-3 text-sm">{task.title}</p>
+	<p class="p-3 text-sm text-foreground">{task.title}</p>
 	<div id={task.id} class="absolute h-full w-full"></div>
 </li>

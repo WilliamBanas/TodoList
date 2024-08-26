@@ -35,11 +35,6 @@
 	import Plus from 'lucide-svelte/icons/plus';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import Label from '$lib/components/ui/label/label.svelte';
-	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { onMount } from 'svelte';
 	import AddTaskCard from '$lib/components/addTaskCard.svelte';
 	// import UnlistedTasks from '$lib/components/UnlistedTasks.svelte';
 
@@ -52,7 +47,7 @@
 	let tags: Tag[] = data.tags;
 	// Toutes les tâches
 	let tasks: TaskItemWithTags[] = data.tasks;
-  let dataForm = data.form
+	let dataForm = data.form;
 	// Toutes les tâches avec leurs tags respectifs
 	let tasksWithTags = tasks.map((task) => {
 		const tagsAssocies = task.tag_Task
@@ -126,10 +121,10 @@
 		{} as { [key: string]: boolean }
 	);
 
-
 	function startAddingTask(categoryId: string) {
 		for (const key in isAddingTask) {
 			isAddingTask[key] = false;
+			console.log('yo');
 		}
 		isAddingTask[categoryId] = true;
 	}
@@ -138,82 +133,74 @@
 		isAddingTask[categoryId] = false;
 	}
 
-  function addingTask(categoryId: string, categoryTasks: TaskItemWithTags[]) {
-    endAddingTask(categoryId);
-    tasksWithTags = tasksWithTags;
-  }
+	function addingTask(categoryId: string) {
+		endAddingTask(categoryId);
+		tasksWithTags = tasksWithTags;
+	}
 </script>
 
 <div class="h-full">
 	<Header nickname={data.nickname} />
 
-	<main class="bg-secondary box-border flex h-3/4 h-fit h-full gap-4 overflow-x-auto px-8">
+	<main class="bg-background box-border flex h-3/4 h-fit h-full gap-4 overflow-x-auto px-8">
 		{#each categories as category}
 			{@const categoryTasks = tasksWithTags.filter((task) => task.categoryId === category.id)}
-			<Card.Root
-				role="contentinfo"
-				class="bg-background mt-24 flex h-fit w-72 min-w-72 flex-col shadow-lg"
+			<div
+				role="group"
+				class="mt-24 h-fit"
+				on:dragenter={() => (isDraggingOverCategory = category.id)}
+				on:dragleave={() => (isDraggingOverCategory = false)}
+				on:drop={(event) => {
+					drop(event, categoryTasks, category.id), (isDraggingOverCategory = false);
+				}}
+				on:dragover={dragOver}
 			>
-				<Card.Header class="p-4">
-					<Card.Title class="text-xl">{category.name}</Card.Title>
-				</Card.Header>
-				<Card.Content class="p-4 pt-0">
-					<ul
-						role="group"
-						class="flex min-h-20 flex-col gap-4 overflow-y-auto rounded transition"
-						class:ring-2={isDraggingOverCategory === category.id ? true : false}
-						class:ring={isDraggingOverCategory === category.id ? true : false}
-						class:border-dashed={categoryTasks.length === 0 && !isAddingTask[category.id]}
-						class:border-2={categoryTasks.length === 0 && !isAddingTask[category.id]}
-						class:border-border={categoryTasks.length === 0 && !isAddingTask[category.id]}
-						class:justify-center={categoryTasks.length === 0 && !isAddingTask[category.id]}
-						on:dragenter={() => (isDraggingOverCategory = category.id)}
-						on:dragleave={() => (isDraggingOverCategory = false)}
-						on:drop={(event) => {
-							drop(event, categoryTasks, category.id), (isDraggingOverCategory = false);
-						}}
-						on:dragover={dragOver}
-					>
-						{#if isAddingTask[category.id]}
-							<AddTaskCard
-								{dataForm}
-								{tableId}
-								{category}
-								{endAddingTask}
-                {addingTask}
-                {categoryTasks}
-							/>
-						{/if}
-						{#if categoryTasks.length === 0 && !isAddingTask[category.id]}
-							<p
-								class="text-input text-primary-foreground/40 flex h-full items-center justify-center"
-							>
-								slide here
-							</p>
-						{:else}
+				<Card.Root
+					role="contentinfo"
+					class="bg-card text-card-foreground min-h-34 flex h-fit w-72 min-w-72 flex-col justify-between shadow-lg"
+				>
+					<Card.Header class="p-4">
+						<Card.Title class="text-xl">{category.name}</Card.Title>
+					</Card.Header>
+					<Card.Content class="p-4 pt-0">
+						<ul 
+              class="flex flex-col gap-4 overflow-y-auto rounded transition py-2"
+            >
+							{#if isAddingTask[category.id]}
+								<AddTaskCard
+									{dataForm}
+									{tableId}
+									{category}
+									{endAddingTask}
+									{addingTask}
+									{categoryTasks}
+								/>
+							{/if}
 							{#each categoryTasks as task}
 								<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
 							{/each}
-						{/if}
-					</ul>
-				</Card.Content>
-				<Card.Footer class="p-4 pt-0">
-					<Button
-						on:click={() => startAddingTask(category.id)}
-						variant="ghost"
-						class="hover:bg-input w-full rounded px-2 transition"
-					>
-						<div class="flex w-full items-center justify-start gap-3">
-							<Plus class="w-6" />
-							<span>Add a new card</span>
-						</div>
-					</Button>
-				</Card.Footer>
-			</Card.Root>
+						</ul>
+					</Card.Content>
+					<Card.Footer class="p-4 pt-0">
+						<Button
+							variant="ghost"
+							on:click={() => startAddingTask(category.id)}
+							class="hover:bg-primary/10 w-full rounded px-2 transition"
+						>
+							<div class="flex w-full items-center justify-start gap-3">
+								<Plus class="w-6" />
+								<span>Add a new card</span>
+							</div>
+						</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
 		{/each}
-		<Card.Root class="bg-background mt-24 flex h-fit w-72 min-w-72 flex-col shadow-lg">
+		<Card.Root
+			class="bg-card text-card-foreground mt-24 flex h-fit w-72 min-w-72 flex-col shadow-lg"
+		>
 			<Card.Header class="p-4">
-				<Button variant="ghost" class="hover:bg-input w-full rounded px-2 "
+				<Button variant="ghost" class="hover:bg-primary/10 w-full rounded px-2 "
 					><div class="flex w-full items-center justify-start gap-3">
 						<Plus class="w-6" />
 						<span>Add a new list</span>

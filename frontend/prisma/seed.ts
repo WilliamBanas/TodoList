@@ -91,7 +91,7 @@ async function main() {
 		data: {
 			id: tag1Id,
 			name: 'Homework',
-			color: 'sky-600',
+			color: 'sky-700',
 			tableId: table1Id
 		}
 	});
@@ -109,7 +109,7 @@ async function main() {
 		data: {
 			id: tag3Id,
 			name: 'Personal',
-			color: 'purple-600',
+			color: 'purple-700',
 			tableId: table1Id
 		}
 	});
@@ -118,7 +118,7 @@ async function main() {
 		data: {
 			id: tag4Id,
 			name: 'Sport',
-			color: 'teal-600',
+			color: 'teal-700',
 			tableId: table1Id
 		}
 	});
@@ -136,7 +136,7 @@ async function main() {
 		data: {
 			id: tag6Id,
 			name: 'Backend',
-			color: 'red-600',
+			color: 'red-700',
 			tableId: table1Id
 		}
 	});
@@ -145,7 +145,7 @@ async function main() {
 		data: {
 			id: tag7Id,
 			name: 'Testing',
-			color: 'yellow-600',
+			color: 'yellow-700',
 			tableId: table1Id
 		}
 	});
@@ -154,7 +154,7 @@ async function main() {
 		data: {
 			id: tag8Id,
 			name: 'Design',
-			color: 'pink-500',
+			color: 'pink-700',
 			tableId: table1Id
 		}
 	});
@@ -163,7 +163,7 @@ async function main() {
 		data: {
 			id: tag9Id,
 			name: 'Management',
-			color: 'orange-500',
+			color: 'orange-700',
 			tableId: table1Id
 		}
 	});
@@ -172,7 +172,7 @@ async function main() {
 		data: {
 			id: tag10Id,
 			name: 'Cooking',
-			color: 'zinc-600 ',
+			color: 'zinc-700 ',
 			tableId: table1Id
 		}
 	});

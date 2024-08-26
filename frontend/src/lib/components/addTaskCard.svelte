@@ -24,7 +24,7 @@
 		action="?/createTask"
 		use:enhance
 		class="flex flex-col gap-1"
-		on:submit={() => (errors ? addingTask(categoryId, categoryTasks) : null)}
+		on:submit={() => ($errors ? null : addingTask(categoryId, categoryTasks))}
 	>
 		<div class="bg-secondary flex flex-col justify-start rounded shadow-md">
 			<div class="flex flex-col">
