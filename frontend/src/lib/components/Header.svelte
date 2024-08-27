@@ -8,8 +8,8 @@
 	function openDrawer() {}
 </script>
 
-<header class="bg-primary text-primary-foreground border-b-2 flex  items-center justify-between px-8 py-4">
-	<h1 class="text-5xl font-bold">Kanban</h1>
+<header class="text-white bg-background text-primary-foreground border-b flex  items-center justify-between px-8 py-4">
+	<h1 class=" text-5xl font-bold">Kanban</h1>
 	<div class="flex gap-10">
 		<button on:click={openDrawer}>Hello {nickname} !</button>
 		<form action="/?/logout" method="POST" use:enhance class="flex items-center gap-6">

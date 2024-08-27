@@ -18,22 +18,22 @@
 	const { form, errors } = superForm(dataForm);
 </script>
 
-<div class="min-h-16">
+<div class="min-h-16 py-2 p-4">
 	<form
 		method="POST"
 		action="?/createTask"
 		use:enhance
-		class="flex flex-col gap-1"
+		class="flex flex-col gap-2"
 		on:submit={() => ($errors ? null : addingTask(categoryId, categoryTasks))}
 	>
-		<div class="bg-secondary flex flex-col justify-start rounded shadow-md">
+		<div class="bg-background text-foreground flex flex-col justify-start rounded border">
 			<div class="flex flex-col">
 				<Textarea
 					autofocus
 					id="title"
 					name="title"
 					placeholder="My new card title"
-					class=" bg-secondary resize-none border-0 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+					class="bg-background rounded resize-none border-0 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
 					bind:value={$form.title}
 				/>
 				{#if $errors.title}
@@ -47,10 +47,10 @@
 				<Input value={tableId} type="text" id="tableId" name="tableId" />
 			</div>
 		</div>
-		<div class=" flex justify-end gap-1">
-			<Button type="submit" class="">Add the card</Button>
-			<Button variant="ghost" class="hover:bg-input px-2" on:click={() => endAddingTask(categoryId)}
-				><X class="w-5" /></Button
+		<div class=" flex justify-end gap-2">
+			<Button type="submit" class="rounded text-semibold text-background">Add the card</Button>
+			<Button variant="ghost" class="bg-secondary hover:bg-secondary/80 rounded px-3 " on:click={() => endAddingTask(categoryId)}
+				><X class="w-5 " /></Button
 			>
 		</div>
 	</form>

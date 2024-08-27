@@ -157,35 +157,34 @@
 			>
 				<Card.Root
 					role="contentinfo"
-					class="bg-card text-card-foreground min-h-34 flex h-fit w-72 min-w-72 flex-col justify-between shadow-lg"
+					class="min-h-34 flex h-fit w-72 flex-col justify-between rounded text-white shadow-lg"
 				>
 					<Card.Header class="p-4">
 						<Card.Title class="text-xl">{category.name}</Card.Title>
 					</Card.Header>
-					<Card.Content class="p-4 pt-0">
-						<ul 
-              class="flex flex-col gap-4 overflow-y-auto rounded transition py-2"
-            >
-							{#if isAddingTask[category.id]}
-								<AddTaskCard
-									{dataForm}
-									{tableId}
-									{category}
-									{endAddingTask}
-									{addingTask}
-									{categoryTasks}
-								/>
+					{#if categoryTasks.length > 0}
+							{#if categoryTasks.length > 0}
+								<ul class="flex flex-col items-center gap-3 overflow-y-auto rounded transition px-4 py-1">
+									{#each categoryTasks as task}
+										<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
+									{/each}
+								</ul>
 							{/if}
-							{#each categoryTasks as task}
-								<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
-							{/each}
-						</ul>
-					</Card.Content>
-					<Card.Footer class="p-4 pt-0">
+					{/if}
+					{#if isAddingTask[category.id]}
+						<AddTaskCard
+							{dataForm}
+							{tableId}
+							{category}
+							{endAddingTask}
+							{addingTask}
+							{categoryTasks}
+						/>
+					{/if}
+					<Card.Footer class="p-4">
 						<Button
-							variant="ghost"
 							on:click={() => startAddingTask(category.id)}
-							class="hover:bg-primary/10 w-full rounded px-2 transition"
+							class="bg-secondary hover:bg-secondary/80 text-foreground w-full rounded px-2 transition"
 						>
 							<div class="flex w-full items-center justify-start gap-3">
 								<Plus class="w-5" />
@@ -197,10 +196,10 @@
 			</div>
 		{/each}
 		<Card.Root
-			class="bg-card text-card-foreground mt-24 flex h-fit w-72 min-w-72 flex-col shadow-lg"
+			class="bg-card text-card-foreground mt-24 flex h-fit w-72 flex-col rounded shadow-lg"
 		>
 			<Card.Header class="p-4">
-				<Button variant="ghost" class="hover:bg-primary/10 w-full rounded px-2 "
+				<Button variant="ghost" class="hover:bg-primary/5 w-full rounded px-2 "
 					><div class="flex w-full items-center justify-start gap-3">
 						<Plus class="w-5" />
 						<span>Add a new list</span>

@@ -14,13 +14,12 @@
 
 	let isOVerAnotherLi = false;
 	let isDragging = false;
-
 </script>
 
 <li
 	role="listitem"
 	id={task.id}
-	class="bg-secondary text-primary-foreground relative flex min-h-16 flex-col justify-start rounded shadow-md"
+	class="w-full bg-background text-foreground border hover:ring-1 hover:ring-primary relative flex min-h-20 flex-col justify-start rounded  px-3 py-2"
 	draggable="true"
 	on:drag
 	on:dragenter={() => (isOVerAnotherLi = true)}
@@ -31,15 +30,18 @@
 	class:opacity-50={isDragging}
 >
 	{#if task.tags.length > 0}
-		<ul class="flex flex-wrap gap-2 p-2">
+		<ul
+			class="mb-1 flex flex-wrap
+     gap-1"
+		>
 			{#each task.tags as tag}
-				<li class={`bg-${tag.color} rounded px-2 text-sm font-semibold shadow`}>
+				<li class={`bg-${tag.color} rounded px-2 text-xs font-semibold shadow`}>
 					{tag.name}
 				</li>
 			{/each}
 		</ul>
 	{/if}
 
-	<p class="p-3 text-sm text-foreground">{task.title}</p>
-	<div id={task.id} class="absolute h-full w-full"></div>
+	<p class="mb-1 text-sm">{task.title}</p>
+	<!-- <div id={task.id} class="absolute h-full w-full"></div> -->
 </li>
