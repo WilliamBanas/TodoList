@@ -8,7 +8,7 @@
 	function openDrawer() {}
 </script>
 
-<header class="text-white bg-background text-primary-foreground border-b flex  items-center justify-between px-8 py-4">
+<header class="border-b flex items-center justify-between px-8 py-4">
 	<h1 class=" text-5xl font-bold">Kanban</h1>
 	<div class="flex gap-10">
 		<button on:click={openDrawer}>Hello {nickname} !</button>

@@ -142,7 +142,7 @@
 <div class="h-full">
 	<Header nickname={data.nickname} />
 
-	<main class="bg-background box-border flex h-3/4 h-fit h-full gap-4 overflow-x-auto px-8">
+	<main class="box-border flex h-3/4 h-fit h-full gap-4 overflow-x-auto px-8">
 		{#each categories as category}
 			{@const categoryTasks = tasksWithTags.filter((task) => task.categoryId === category.id)}
 			<div
@@ -157,19 +157,21 @@
 			>
 				<Card.Root
 					role="contentinfo"
-					class="min-h-34 flex h-fit w-72 flex-col justify-between rounded text-white shadow-lg"
+					class="min-h-34 flex h-fit w-72 flex-col justify-between rounded text-white shadow-lg border"
 				>
 					<Card.Header class="p-4">
 						<Card.Title class="text-xl">{category.name}</Card.Title>
 					</Card.Header>
 					{#if categoryTasks.length > 0}
-							{#if categoryTasks.length > 0}
-								<ul class="flex flex-col items-center gap-3 overflow-y-auto rounded transition px-4 py-1">
-									{#each categoryTasks as task}
-										<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
-									{/each}
-								</ul>
-							{/if}
+						{#if categoryTasks.length > 0}
+							<ul
+								class="flex flex-col items-center gap-3 overflow-y-auto rounded px-4 py-1 transition"
+							>
+								{#each categoryTasks as task}
+									<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
+								{/each}
+							</ul>
+						{/if}
 					{/if}
 					{#if isAddingTask[category.id]}
 						<AddTaskCard
@@ -183,8 +185,9 @@
 					{/if}
 					<Card.Footer class="p-4">
 						<Button
+							variant="ghost"
 							on:click={() => startAddingTask(category.id)}
-							class="bg-secondary hover:bg-secondary/80 text-foreground w-full rounded px-2 transition"
+							class=" hover:bg-secondary/40 text-foreground w-full rounded px-2 transition"
 						>
 							<div class="flex w-full items-center justify-start gap-3">
 								<Plus class="w-5" />
@@ -195,18 +198,14 @@
 				</Card.Root>
 			</div>
 		{/each}
-		<Card.Root
-			class="bg-card text-card-foreground mt-24 flex h-fit w-72 flex-col rounded shadow-lg"
+
+		<Button
+			class="mt-24 flex h-fit w-72 flex-col rounded rounded px-2 shadow-lg"
+			><div class="flex w-full items-center justify-start gap-3">
+				<Plus class="w-5" />
+				<span>Add a new list</span>
+			</div></Button
 		>
-			<Card.Header class="p-4">
-				<Button variant="ghost" class="hover:bg-primary/5 w-full rounded px-2 "
-					><div class="flex w-full items-center justify-start gap-3">
-						<Plus class="w-5" />
-						<span>Add a new list</span>
-					</div></Button
-				>
-			</Card.Header>
-		</Card.Root>
 	</main>
 	<!-- <UnlistedTasks
 			{isDraggingOverCategory}

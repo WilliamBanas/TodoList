@@ -18,7 +18,7 @@
 	const { form, errors } = superForm(dataForm);
 </script>
 
-<div class="min-h-16 py-2 p-4">
+<div class=" py-1 p-4">
 	<form
 		method="POST"
 		action="?/createTask"
@@ -26,14 +26,14 @@
 		class="flex flex-col gap-2"
 		on:submit={() => ($errors ? null : addingTask(categoryId, categoryTasks))}
 	>
-		<div class="bg-background text-foreground flex flex-col justify-start rounded border">
+		<div class="bg-background flex flex-col justify-start rounded border-2 border-secondary/50 h-fit">
 			<div class="flex flex-col">
 				<Textarea
 					autofocus
 					id="title"
 					name="title"
 					placeholder="My new card title"
-					class="bg-background rounded resize-none border-0 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+					class=" rounded resize-none border-0 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
 					bind:value={$form.title}
 				/>
 				{#if $errors.title}

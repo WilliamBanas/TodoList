@@ -19,7 +19,7 @@
 <li
 	role="listitem"
 	id={task.id}
-	class="w-full bg-background text-foreground border hover:ring-1 hover:ring-primary relative flex min-h-20 flex-col justify-start rounded  px-3 py-2"
+	class="w-full bg-background text-foreground border-2 border-secondary/50 hover:ring-1 hover:ring-primary relative flex min-h-20 flex-col justify-start rounded px-3 py-2"
 	draggable="true"
 	on:drag
 	on:dragenter={() => (isOVerAnotherLi = true)}
@@ -43,5 +43,5 @@
 	{/if}
 
 	<p class="mb-1 text-sm">{task.title}</p>
-	<!-- <div id={task.id} class="absolute h-full w-full"></div> -->
+	<div id={task.id} class="absolute inset-0 h-full w-full"></div>
 </li>
