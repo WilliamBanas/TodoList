@@ -36,6 +36,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import AddTaskCard from '$lib/components/addTaskCard.svelte';
+	import AddCategoryCard from '$lib/components/addCategoryCard.svelte';
 	// import UnlistedTasks from '$lib/components/UnlistedTasks.svelte';
 
 	let isDraggingOverCategory: string | false = false;
@@ -137,6 +138,12 @@
 		endAddingTask(categoryId);
 		tasksWithTags = tasksWithTags;
 	}
+
+	let isAddingCategory = false;
+
+	function toggleAddingCategory() {
+		isAddingCategory = !isAddingCategory;
+	}
 </script>
 
 <div class="h-full">
@@ -157,16 +164,14 @@
 			>
 				<Card.Root
 					role="contentinfo"
-					class="min-h-34 flex h-fit w-72 flex-col justify-between rounded text-white shadow-lg border"
+					class="flex h-fit min-h-28 w-72 flex-col justify-between rounded border text-white shadow-lg"
 				>
-					<Card.Header class="p-4">
-						<Card.Title class="text-xl">{category.name}</Card.Title>
+					<Card.Header class="p-2 pb-0">
+						<Card.Title class="text-md p-2 pl-3">{category.name}</Card.Title>
 					</Card.Header>
 					{#if categoryTasks.length > 0}
 						{#if categoryTasks.length > 0}
-							<ul
-								class="flex flex-col items-center gap-3 overflow-y-auto rounded px-4 py-1 transition"
-							>
+							<ul class="flex flex-col items-center gap-3 overflow-y-auto rounded px-2 py-1">
 								{#each categoryTasks as task}
 									<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
 								{/each}
@@ -183,7 +188,7 @@
 							{categoryTasks}
 						/>
 					{/if}
-					<Card.Footer class="p-4">
+					<Card.Footer class="p-2">
 						<Button
 							variant="ghost"
 							on:click={() => startAddingTask(category.id)}
@@ -198,14 +203,18 @@
 				</Card.Root>
 			</div>
 		{/each}
-
-		<Button
-			class="mt-24 flex h-fit w-72 flex-col rounded rounded px-2 shadow-lg"
-			><div class="flex w-full items-center justify-start gap-3">
-				<Plus class="w-5" />
-				<span>Add a new list</span>
-			</div></Button
-		>
+		{#if isAddingCategory}
+			<AddCategoryCard {toggleAddingCategory} {tableId} />
+		{:else}
+			<Button
+				on:click={toggleAddingCategory}
+				class="mt-24 flex h-fit min-w-72 flex-col rounded rounded px-2 shadow-lg"
+				><div class="flex w-full items-center justify-start gap-3">
+					<Plus class="w-5" />
+					<span>Add a new list</span>
+				</div></Button
+			>
+		{/if}
 	</main>
 	<!-- <UnlistedTasks
 			{isDraggingOverCategory}
