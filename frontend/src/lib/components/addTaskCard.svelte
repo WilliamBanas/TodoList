@@ -18,7 +18,7 @@
 	const { form, errors } = superForm(dataForm);
 </script>
 
-<div class=" py-1 p-4 px-2 py-1">
+<div class=" py-2 p-4 px-2 py-1">
 	<form
 		method="POST"
 		action="?/createTask"
