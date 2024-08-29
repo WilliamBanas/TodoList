@@ -68,7 +68,11 @@ const config: Config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
-			}
+			},
+      backgroundImage: {
+        'mountain': "url('./lib/assets/mountain.avif')",
+        'mountainTwo': "url('./lib/assets/moutain2.jpg')",
+      }
 		}
 	},
 };

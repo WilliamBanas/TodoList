@@ -18,15 +18,15 @@
 	const { form, errors } = superForm(dataForm);
 </script>
 
-<div class=" py-2 p-4 px-2 py-1">
+<div class="p-4 px-2 py-1">
 	<form
 		method="POST"
 		action="?/createTask"
 		use:enhance
-		class="flex flex-col gap-2 "
+		class="flex flex-col gap-1 "
 		on:submit={() => ($errors ? null : addingTask(categoryId, categoryTasks))}
 	>
-		<div class="bg-background flex flex-col justify-start rounded border border-secondary/50 h-fit px-1 ">
+		<div class="bg-background flex flex-col justify-start rounded border border-secondary/50 h-fit ">
 			<div class="flex flex-col">
 				<Textarea
 					autofocus
