@@ -27,6 +27,10 @@ const category3Id = generateId(15);
 const category4Id = generateId(15);
 const category5Id = generateId(15);
 const category6Id = generateId(15);
+const category7Id = generateId(15);
+const category8Id = generateId(15);
+const category9Id = generateId(15);
+
 
 const task1Id = generateId(15);
 const task2Id = generateId(15);
@@ -207,25 +211,55 @@ async function main() {
 	const category4 = await prisma.taskCategory.create({
 		data: {
 			id: category4Id,
-			name: 'Todo',
-			userId: user2Id,
-      tableId: table2Id
+			name: 'Test 1',
+			userId: user1Id,
+      tableId: table1Id
 		}
 	});
 	const category5 = await prisma.taskCategory.create({
 		data: {
 			id: category5Id,
-			name: 'Doing',
-			userId: user2Id,
-      tableId: table2Id
+			name: 'Test 2',
+			userId: user1Id,
+      tableId: table1Id
 		}
 	});
 	const category6 = await prisma.taskCategory.create({
 		data: {
 			id: category6Id,
-			name: 'Done',
-			userId: user2Id,
-      tableId: table2Id
+			name: 'Test 3',
+			userId: user1Id,
+      tableId: table1Id
+
+		}
+	});
+
+  const category7 = await prisma.taskCategory.create({
+		data: {
+			id: category7Id,
+			name: 'Test 4',
+			userId: user1Id,
+      tableId: table1Id
+
+		}
+	});
+
+  const category8 = await prisma.taskCategory.create({
+		data: {
+			id: category8Id,
+			name: 'Test 5',
+			userId: user1Id,
+      tableId: table1Id
+
+		}
+	});
+
+  const category9 = await prisma.taskCategory.create({
+		data: {
+			id: category9Id,
+			name: 'Test 6',
+			userId: user1Id,
+      tableId: table1Id
 
 		}
 	});

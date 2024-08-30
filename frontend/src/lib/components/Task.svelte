@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	import type { TaskItemWithTags } from '../../routes/tables/[tableId]/+page.svelte';
+  import Badge from './ui/badge/badge.svelte';
 
 	export interface tag_Task {
 		id: string;
@@ -35,9 +36,9 @@
      gap-1"
 		>
 			{#each task.tags as tag}
-				<li class={`bg-${tag.color} rounded px-2 text-xs font-semibold shadow`}>
+				<Badge class={`bg-${tag.color} rounded text-xs font-semibold shadow`}>
 					{tag.name}
-				</li>
+				</Badge>
 			{/each}
 		</ul>
 	{/if}
