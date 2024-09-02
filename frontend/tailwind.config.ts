@@ -70,7 +70,7 @@ const config: Config = {
 				sans: [...fontFamily.sans]
 			},
       backgroundImage: {
-        'mountain': "url('./lib/assets/mountain.avif')",
+        'mountain': "url('./lib/assets/mountain.jpg')",
         'mountainTwo': "url('./lib/assets/moutain2.jpg')",
       }
 		}

@@ -162,88 +162,88 @@
 <div class="flex h-full flex-col">
 	<Header nickname={data.nickname} />
 
-	<main class="bg-mountainTwo flex shrink grow basis-0 bg-cover bg-center">
-		<div class="relative flex flex-col grow overflow-y-auto outline-none">
-				<div class="bg-card/70 flex h-16 items-center gap-6 px-8">
-					<h2 class="text-2xl">My table</h2>
-					<Button on:click={toggleFavorite} variant="ghost" class="p-0 hover:bg-transparent">
-						<Star
-							fill={favorite ? '#FFEA00' : 'transparent'}
-							class="w-5"
-							strokeWidth={favorite ? 0 : 1.5}
-						/>
-					</Button>
-				</div>
-				<div class="mt-3 grow relative">
-					<div class="max-w-full flex gap-3 absolute top-0 right-0 left-0 bottom-0 overflow-x-auto overflow-y-hidden py-2 mb-2">
-						{#each categories as category}
-							{@const categoryTasks = tasksWithTags.filter(
-								(task) => task.categoryId === category.id
-							)}
-							<div
-								role="group"
-								class="h-full w-72 min-w-72"
-								on:dragenter={() => (isDraggingOverCategory = category.id)}
-								on:dragleave={() => (isDraggingOverCategory = false)}
-								on:drop={(event) => {
-									drop(event, categoryTasks, category.id), (isDraggingOverCategory = false);
-								}}
-								on:dragover={dragOver}
+	<main class="bg-mountain flex shrink grow basis-0 bg-cover bg-center">
+		<div class="relative flex grow flex-col overflow-y-auto outline-none">
+			<div class="bg-card/70 flex h-16 items-center gap-6 px-8">
+				<h2 class="text-2xl">My table</h2>
+				<Button on:click={toggleFavorite} variant="ghost" class="p-0 hover:bg-transparent">
+					<Star
+						fill={favorite ? '#FFEA00' : 'transparent'}
+						class="w-5"
+						strokeWidth={favorite ? 0 : 1.5}
+					/>
+				</Button>
+			</div>
+			<div class="relative mt-3 grow">
+				<div
+					class="absolute bottom-0 left-0 right-0 top-0 mb-2 flex max-w-full gap-3 overflow-x-auto overflow-y-hidden px-3 py-2"
+				>
+					{#each categories as category}
+						{@const categoryTasks = tasksWithTags.filter((task) => task.categoryId === category.id)}
+						<div
+							role="group"
+							class="h-full w-72 min-w-72"
+							on:dragenter={() => (isDraggingOverCategory = category.id)}
+							on:dragleave={() => (isDraggingOverCategory = false)}
+							on:drop={(event) => {
+								drop(event, categoryTasks, category.id), (isDraggingOverCategory = false);
+							}}
+							on:dragover={dragOver}
+						>
+							<Card.Root
+								role="contentinfo"
+								class="flex max-h-full min-h-28 w-full flex-col justify-between rounded border text-white shadow-lg"
 							>
-								<Card.Root
-									role="contentinfo"
-									class="flex max-h-full min-h-28 w-full flex-col justify-between rounded border text-white shadow-lg"
-								>
-									<Card.Header class="p-2 pb-0">
-										<Card.Title class="text-md p-2 pl-3">{category.name}</Card.Title>
-									</Card.Header>
+								<Card.Header class="p-2 pb-0">
+									<Card.Title class="text-md p-2 pl-3">{category.name}</Card.Title>
+								</Card.Header>
+								{#if categoryTasks.length > 0}
 									{#if categoryTasks.length > 0}
-										{#if categoryTasks.length > 0}
-											<ul class="flex flex-col items-center gap-2 overflow-y-auto px-2 py-1">
-												{#each categoryTasks as task}
-													<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
-												{/each}
-											</ul>
-										{/if}
+										<ul class="flex flex-col items-center gap-2 overflow-y-auto px-2 py-1">
+											{#each categoryTasks as task}
+												<Task on:drag={(event) => dragging(event, categoryTasks)} {task} />
+											{/each}
+										</ul>
 									{/if}
-									{#if isAddingTask[category.id]}
-										<AddTaskCard
-											{dataForm}
-											{tableId}
-											{category}
-											{endAddingTask}
-											{addingTask}
-											{categoryTasks}
-										/>
-									{/if}
-									<Card.Footer class="p-2">
-										<Button
-											variant="ghost"
-											on:click={() => startAddingTask(category.id)}
-											class=" hover:bg-secondary/40 text-foreground w-full rounded px-2 transition"
-										>
-											<div class="flex w-full items-center justify-start gap-3">
-												<Plus class="w-5" />
-												<span>Add a new card</span>
-											</div>
-										</Button>
-									</Card.Footer>
-								</Card.Root>
-							</div>
-						{/each}
-						{#if isAddingCategory}
-							<AddCategoryCard {toggleAddingCategory} {tableId} />
-						{:else}
-							<Button
-								on:click={toggleAddingCategory}
-								class="flex h-fit min-w-72 flex-col rounded rounded px-2 shadow-lg "
-								><div class="flex w-full items-center justify-start gap-3">
-									<Plus class="w-5" />
-									<span>Add a new list</span>
-								</div></Button
-							>
-						{/if}
-					</div>
+								{/if}
+								{#if isAddingTask[category.id]}
+									<AddTaskCard
+										{dataForm}
+										{tableId}
+										{category}
+										{endAddingTask}
+										{addingTask}
+										{categoryTasks}
+									/>
+								{/if}
+								<Card.Footer class="p-2">
+									<Button
+										variant="ghost"
+										on:click={() => startAddingTask(category.id)}
+										class=" hover:bg-secondary/40 text-foreground w-full rounded px-2 transition"
+									>
+										<div class="flex w-full items-center justify-start gap-3">
+											<Plus class="w-5" />
+											<span>Add a new card</span>
+										</div>
+									</Button>
+								</Card.Footer>
+							</Card.Root>
+						</div>
+					{/each}
+					{#if isAddingCategory}
+						<AddCategoryCard {toggleAddingCategory} {tableId} />
+					{:else}
+						<Button
+							on:click={toggleAddingCategory}
+							class="flex h-fit min-w-72 flex-col rounded rounded px-2 shadow-lg "
+							><div class="flex w-full items-center justify-start gap-3">
+								<Plus class="w-5" />
+								<span>Add a new list</span>
+							</div></Button
+						>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</main>

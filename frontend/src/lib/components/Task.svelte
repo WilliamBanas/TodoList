@@ -36,7 +36,7 @@
      gap-1"
 		>
 			{#each task.tags as tag}
-				<Badge class={`bg-${tag.color} rounded text-xs font-semibold shadow`}>
+				<Badge class={`bg-${tag.color} rounded text-xs text-white font-semibold shadow`}>
 					{tag.name}
 				</Badge>
 			{/each}
