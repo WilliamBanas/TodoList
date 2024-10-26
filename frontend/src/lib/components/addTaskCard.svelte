@@ -7,24 +7,42 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { Category } from '../../routes/tables/[tableId]/+page.svelte';
 	import type { TaskItemWithTags } from '../../routes/tables/[tableId]/+page.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let endAddingTask: (categoryId: string) => void;
 	export let addingTask: (categoryId: string, categoryTasks: TaskItemWithTags[]) => void;
 	export let category: Category;
 	export let tableId;
 	export let dataForm;
-	export let categoryTasks;
+	export let categoryTasks: TaskItemWithTags[];
 	let categoryId: string = category.id;
 	const { form, errors } = superForm(dataForm);
+	const dispatch = createEventDispatcher();
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+		const formData = new FormData(event.target as HTMLFormElement);
+		const response = await fetch('?/createTask', {
+			method: 'POST',
+			body: formData
+		});
+
+		if (response.ok) {
+			const newTask = await response.json();
+			dispatch('taskAdded', newTask);
+			addingTask(categoryId, [...categoryTasks, newTask]);
+			$form.title = ''; // Réinitialiser le formulaire
+		} else {
+			// Gérer l'erreur
+			console.error('Failed to add task');
+		}
+	}
 </script>
 
 <div class="px-2 py-1">
 	<form
-		method="POST"
-		action="?/createTask"
-		use:enhance
-		class="flex flex-col gap-1 "
-		on:submit={() => ($errors ? null : addingTask(categoryId, categoryTasks))}
+		on:submit={handleSubmit}
+		class="flex flex-col gap-1"
 	>
 		<div class="bg-background flex flex-col justify-start rounded border border-secondary/50 h-fit ">
 			<div class="flex flex-col">

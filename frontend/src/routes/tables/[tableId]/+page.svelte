@@ -87,20 +87,47 @@
 		const changedCategoryId = await response.json();
 	};
 
-	function drop(event: DragEvent, tasksList: TaskItemWithTags[], id: string) {
+	function drop(event: DragEvent, tasksList: TaskItemWithTags[], categoryId: string) {
+		event.preventDefault();
 		const dropTarget = event.target as HTMLElement;
+		
+		// Vérifier si on ne dépose pas la tâche sur elle-même
 		if (dropTarget.getAttribute('id') === taskDragging.id) {
-			return null;
-		} else if (dropTarget.parentNode?.nodeName === 'LI') {
-			const id = dropTarget.getAttribute('id');
-			const dropTargetTask = tasksList.find((task) => task.id === id);
-			if (dropTargetTask) {
-				const dropTargetIndex = tasksList.indexOf(dropTargetTask);
-				tasksList.splice(dropTargetIndex, 0, taskDragging);
+			return;
+		}
+
+		// Trouver l'index de la tâche en cours de déplacement dans la liste originale
+		const draggedTaskIndex = tasksWithTags.findIndex(task => task.id === taskDragging.id);
+
+		// Supprimer la tâche de sa position originale
+		if (draggedTaskIndex > -1) {
+			tasksWithTags.splice(draggedTaskIndex, 1);
+		}
+
+		// Trouver la tâche cible et son index
+		let targetTask = tasksList.find(task => task.id === dropTarget.getAttribute('id'));
+		let targetIndex = targetTask ? tasksList.findIndex(task => task.id === targetTask.id) : -1;
+
+		// Si on n'a pas trouvé de tâche cible, ajouter à la fin de la liste
+		if (targetIndex === -1) {
+			targetIndex = tasksList.length;
+		} else {
+			// Si on déplace vers le bas, incrémenter l'index cible
+			if (draggedTaskIndex < targetIndex) {
+				targetIndex++;
 			}
 		}
-		taskDragging.categoryId = id;
-		updateTaskCategory(taskDragging.id, id);
+
+		// Mettre à jour la catégorie de la tâche déplacée
+		taskDragging.categoryId = categoryId;
+
+		// Insérer la tâche à sa nouvelle position
+		tasksWithTags.splice(targetIndex, 0, taskDragging);
+
+		// Mettre à jour la catégorie dans la base de données
+		updateTaskCategory(taskDragging.id, categoryId);
+
+		// Forcer la mise à jour de l'interface
 		tasksWithTags = tasksWithTags;
 	}
 
@@ -136,9 +163,11 @@
 		isAddingTask[categoryId] = false;
 	}
 
-	function addingTask(categoryId: string) {
+	function addingTask(categoryId: string, updatedCategoryTasks: TaskItemWithTags[]) {
+		tasksWithTags = tasksWithTags.map(task => 
+			task.categoryId === categoryId ? updatedCategoryTasks.find(t => t.id === task.id) || task : task
+		);
 		endAddingTask(categoryId);
-		tasksWithTags = tasksWithTags;
 	}
 
 	let isAddingCategory = false;
@@ -156,6 +185,17 @@
 			favorite = true;
 			console.log('true');
 		}
+	}
+
+	function handleTaskAdded(event: CustomEvent) {
+		const newTask = event.detail;
+		tasksWithTags = [...tasksWithTags, newTask];
+	}
+
+	function handleCategoryAdded(event: CustomEvent) {
+		const newCategory = event.detail;
+		categories = [...categories, newCategory];
+		isAddingTask = { ...isAddingTask, [newCategory.id]: false };
 	}
 </script>
 
@@ -213,7 +253,8 @@
 										{category}
 										{endAddingTask}
 										{addingTask}
-										{categoryTasks}
+										categoryTasks={categoryTasks}
+										on:taskAdded={handleTaskAdded}
 									/>
 								{/if}
 								<Card.Footer class="p-2">
@@ -222,25 +263,29 @@
 										on:click={() => startAddingTask(category.id)}
 										class=" hover:bg-secondary/40 text-foreground w-full rounded px-2 transition"
 									>
-										<div class="flex w-full items-center justify-start gap-3">
-											<Plus class="w-5" />
-											<span>Add a new card</span>
-										</div>
+											<div class="flex w-full items-center justify-start gap-3">
+												<Plus class="w-5" />
+												<span>Add a new card</span>
+											</div>
 									</Button>
 								</Card.Footer>
 							</Card.Root>
 						</div>
 					{/each}
 					{#if isAddingCategory}
-						<AddCategoryCard {toggleAddingCategory} {tableId} />
+						<AddCategoryCard 
+							{toggleAddingCategory} 
+							{tableId} 
+							on:categoryAdded={handleCategoryAdded}
+						/>
 					{:else}
 						<Button
 							on:click={toggleAddingCategory}
 							class="flex h-fit min-w-72 flex-col rounded rounded px-2 shadow-lg "
 							><div class="flex w-full items-center justify-start gap-3">
-								<Plus class="w-5" />
-								<span>Add a new list</span>
-							</div></Button
+									<Plus class="w-5" />
+									<span>Add a new list</span>
+								</div></Button
 						>
 					{/if}
 				</div>
